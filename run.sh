@@ -80,6 +80,14 @@ VPN_USER=$(noquotes "$VPN_USER")
 VPN_PASSWORD=$(nospaces "$VPN_PASSWORD")
 VPN_PASSWORD=$(noquotes "$VPN_PASSWORD")
 
+if [ -n "$VPN_IPSEC_GROUP" ]; then
+  VPN_IPSEC_GROUP=$(noquotes "$VPN_IPSEC_GROUP")
+else
+  VPN_IPSEC_GROUP=""
+fi
+#VPN_IPSEC_GROUP=$(noquotes "$VPN_IPSEC_GROUP")
+#VPN_IPSEC_GROUP=$(noquotes "$VPN_IPSEC_GROUP")
+
 if [ -n "$VPN_ADDL_USERS" ] && [ -n "$VPN_ADDL_PASSWORDS" ]; then
   VPN_ADDL_USERS=$(nospaces "$VPN_ADDL_USERS")
   VPN_ADDL_USERS=$(noquotes "$VPN_ADDL_USERS")
@@ -208,6 +216,8 @@ conn xauth-psk
   xauthby=file
   ike-frag=yes
   cisco-unity=yes
+  rightid=@[$VPN_IPSEC_GROUP]
+  aggrmode=yes
   also=shared
 EOF
 
@@ -346,6 +356,7 @@ Server IP: $PUBLIC_IP
 IPsec PSK: $VPN_IPSEC_PSK
 Username: $VPN_USER
 Password: $VPN_PASSWORD
+VPN GROUP: $VPN_IPSEC_GROUP
 EOF
 
 if [ -n "$VPN_ADDL_USERS" ] && [ -n "$VPN_ADDL_PASSWORDS" ]; then
